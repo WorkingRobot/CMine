@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBBlockEntityData {
-    const int Id = 0x0A;
+    static const int Id = 0x0A;
 
     SocketPosition Location;
     SocketByte Action;

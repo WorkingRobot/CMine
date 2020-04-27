@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityEquipment {
-    const int Id = 0x47;
+    static const int Id = 0x47;
 
     SocketVarInt EntityId;
     SocketVarInt Slot; // 0: main hand, 1: off hand, 2-5: armor (boots->helmet)

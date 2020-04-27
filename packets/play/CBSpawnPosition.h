@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSpawnPosition {
-    const int Id = 0x4E;
+    static const int Id = 0x4E;
 
     SocketPosition Location;
 

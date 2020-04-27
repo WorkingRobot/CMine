@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSpawnWeatherEntity {
-    const int Id = 0x02;
+    static const int Id = 0x02;
 
     SocketVarInt EntityId;
     SocketByte Type; // Enum, always 1 for thunderbolt tho

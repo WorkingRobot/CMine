@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBUpdateLight {
-    const int Id = 0x25;
+    static const int Id = 0x25;
 
     SocketVarInt ChunkX;
     SocketVarInt ChunkZ;

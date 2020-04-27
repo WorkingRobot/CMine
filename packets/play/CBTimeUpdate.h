@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBTimeUpdate {
-    const int Id = 0x4F;
+    static const int Id = 0x4F;
 
     SocketLong WorldAge;
     SocketLong TimeOfDay;

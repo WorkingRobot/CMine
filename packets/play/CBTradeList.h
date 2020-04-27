@@ -6,7 +6,7 @@
 #include <optional>
 
 struct CBTradeList {
-    const int Id = 0x28;
+    static const int Id = 0x28;
 
     struct Trade {
         SocketSlot Input1;

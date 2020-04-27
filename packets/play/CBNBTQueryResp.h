@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBNBTQueryResp {
-    const int Id = 0x55;
+    static const int Id = 0x55;
 
     SocketVarInt TransactionId;
     SocketNBT Data;

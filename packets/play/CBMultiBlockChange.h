@@ -5,7 +5,7 @@
 #include <vector>
 
 struct CBMultiBlockChange {
-    const int Id = 0x10;
+    static const int Id = 0x10;
 
     struct Record {
         SocketUByte HPos; // 0xF0 -> X, 0x0F -> Z

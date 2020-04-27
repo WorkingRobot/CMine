@@ -6,7 +6,7 @@
 #include <vector>
 
 struct CBTabComplete {
-    const int Id = 0x11;
+    static const int Id = 0x11;
 
     struct Match {
         SocketString Match;

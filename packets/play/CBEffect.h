@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEffect {
-    const int Id = 0x23;
+    static const int Id = 0x23;
 
     SocketInt EffectId;
     SocketPosition Location;

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBAckPlayerDig {
-    const int Id = 0x08;
+    static const int Id = 0x08;
 
     SocketPosition Location;
     SocketVarInt Block; // current block state

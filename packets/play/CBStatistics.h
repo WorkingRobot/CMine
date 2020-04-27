@@ -5,7 +5,7 @@
 #include <vector>
 
 struct CBStatistics {
-    const int Id = 0x07;
+    static const int Id = 0x07;
 
     struct Statistic {
         SocketVarInt CategoryId;

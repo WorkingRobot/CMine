@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBDeclareCommands {
-    const int Id = 0x12;
+    static const int Id = 0x12;
 
     std::vector<SocketNode> Nodes;
     SocketVarInt RootInd;

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBUpdateScore {
-    const int Id = 0x4D;
+    static const int Id = 0x4D;
 
     SocketString EntityName; // username (player) or uuid (entity)
     SocketByte Action; // 0: create/update, 1: remove

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBTeams {
-    const int Id = 0x4C;
+    static const int Id = 0x4C;
 
     SocketString Name; // 16 chars
     SocketByte Mode;

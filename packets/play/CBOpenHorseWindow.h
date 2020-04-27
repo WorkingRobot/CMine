@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBOpenHorseWindow {
-    const int Id = 0x20;
+    static const int Id = 0x20;
 
     SocketUByte WindowId; // a ton of oddball reasons
     SocketVarInt SlotCount;

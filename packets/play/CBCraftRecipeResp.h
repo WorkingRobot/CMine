@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBCraftRecipeResp {
-    const int Id = 0x31;
+    static const int Id = 0x31;
 
     SocketUByte WindowId;
     SocketIdentifier RecipeId;

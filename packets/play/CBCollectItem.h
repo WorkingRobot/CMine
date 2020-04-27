@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBCollectItem {
-    const int Id = 0x56;
+    static const int Id = 0x56;
 
     SocketVarInt CollectedId;
     SocketVarInt CollectorId;

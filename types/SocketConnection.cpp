@@ -6,9 +6,15 @@
 
 #include <iostream>
 
+#define OFFLINE_MODE
 #define RECV_SIZE 1024
 
-#define OFFLINE_MODE
+#define SEND_PACKET(packet) \
+{ \
+	SocketPacketOStream os(decltype(packet)::Id); \
+	os << packet; \
+	*this << os; \
+}
 
 SocketConnection::SocketConnection(SOCKET socket, ServerEnc* encSrv) :
 	Socket(socket),
@@ -197,6 +203,7 @@ void SocketConnection::HandlePacket(SocketPacket& packet)
 			*this << os;
 
 			State = ConnectionState::Play;
+			InitLogin();
 		}
 		case 0x01:
 		{
@@ -264,4 +271,20 @@ void SocketConnection::ConnectionThread() {
 		HandlePacket(packet);
 	}
 	shutdown(Socket, SD_BOTH);
+}
+
+void SocketConnection::InitLogin()
+{
+	CBJoinGame join;
+	join.EntityId = 0;
+	join.Gamemode = 1;
+	join.Dimension = 0;
+	join.HashedSeed = 0;
+	join.MaxPlayers = 0;
+	join.LevelType = "default";
+	join.ViewDistance = 2;
+	join.ReducedDebugInfo = false;
+	join.EnableRespawnScreen = true;
+
+	SEND_PACKET(join);
 }

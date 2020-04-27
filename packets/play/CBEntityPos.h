@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityPos {
-    const int Id = 0x29;
+    static const int Id = 0x29;
 
     SocketVarInt EntityId;
     SocketShort DeltaX; // allows movement in at most 8 blocks in any coordinate direction

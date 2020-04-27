@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBOpenWindow {
-    const int Id = 0x2F;
+    static const int Id = 0x2F;
 
     SocketVarInt WindowId;
     SocketVarInt WindowType;

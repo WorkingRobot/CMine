@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBTags {
-    const int Id = 0x5C;
+    static const int Id = 0x5C;
 
     struct Tag {
         SocketIdentifier Name;

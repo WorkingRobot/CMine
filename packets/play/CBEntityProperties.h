@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityProperties {
-    const int Id = 0x59;
+    static const int Id = 0x59;
 
     struct Modifier {
         SocketGUID Uuid;

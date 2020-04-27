@@ -6,7 +6,7 @@
 #include <optional>
 
 struct CBMapData {
-    const int Id = 0x27;
+    static const int Id = 0x27;
 
     struct Icon {
         SocketVarInt Type;

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBOpenSignEditor {
-    const int Id = 0x30;
+    static const int Id = 0x30;
 
     SocketPosition Location;
 

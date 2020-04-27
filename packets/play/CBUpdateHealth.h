@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBUpdateHealth {
-    const int Id = 0x49;
+    static const int Id = 0x49;
 
     SocketFloat Health;
     SocketVarInt Food;

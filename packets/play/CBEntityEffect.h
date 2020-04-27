@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityEffect {
-    const int Id = 0x5A;
+    static const int Id = 0x5A;
 
     SocketVarInt EntityId;
     SocketByte EffectId;

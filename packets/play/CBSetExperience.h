@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSetExperience {
-    const int Id = 0x48;
+    static const int Id = 0x48;
 
     SocketFloat XPBar;
     SocketVarInt Level;

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityRot {
-    const int Id = 0x2B;
+    static const int Id = 0x2B;
 
     SocketVarInt EntityId;
     SocketAngle Yaw; // absolute, not deltas

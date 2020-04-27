@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBDeclareRecipes {
-    const int Id = 0x5B;
+    static const int Id = 0x5B;
 
     struct Recipe {
         SocketIdentifier Id;

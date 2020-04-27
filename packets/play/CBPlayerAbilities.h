@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBPlayerAbilities {
-    const int Id = 0x32;
+    static const int Id = 0x32;
 
     SocketByte Flags; // 0x01: invulnerable, 0x02: flying, 0x04: allow flying, 0x08: creative mode
     SocketFloat FlySpeed;

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBRemoveEntityEffect {
-    const int Id = 0x39;
+    static const int Id = 0x39;
 
     SocketVarInt EntityId;
     SocketByte EffectId;

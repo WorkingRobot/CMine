@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBChangeGameState {
-    const int Id = 0x1F;
+    static const int Id = 0x1F;
 
     SocketUByte Reason; // a ton of oddball reasons
     SocketFloat Value;

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBWindowClose {
-    const int Id = 0x14;
+    static const int Id = 0x14;
 
     SocketUByte WindowId;
 

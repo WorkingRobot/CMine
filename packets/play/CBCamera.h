@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBCamera {
-    const int Id = 0x3F;
+    static const int Id = 0x3F;
 
     SocketVarInt EntityId;
 

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBBlockChange {
-    const int Id = 0x0C;
+    static const int Id = 0x0C;
 
     SocketPosition Location;
     SocketVarInt BlockId;

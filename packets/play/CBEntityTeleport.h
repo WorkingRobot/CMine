@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityTeleport {
-    const int Id = 0x57;
+    static const int Id = 0x57;
 
     SocketVarInt EntityId;
     SocketDouble PosX;

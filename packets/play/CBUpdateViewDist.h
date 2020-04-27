@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBUpdateViewDist {
-    const int Id = 0x42;
+    static const int Id = 0x42;
 
     SocketVarInt Distance; // 2-32
 

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBUnloadChunk {
-    const int Id = 0x1E;
+    static const int Id = 0x1E;
 
     SocketInt ChunkX;
     SocketInt ChunkZ;

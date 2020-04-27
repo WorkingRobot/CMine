@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBBossBar {
-    const int Id = 0x0D;
+    static const int Id = 0x0D;
 
     SocketGUID Uuid;
     SocketVarInt Action; // enum

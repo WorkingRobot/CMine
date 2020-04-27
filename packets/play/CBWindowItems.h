@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBWindowItems {
-    const int Id = 0x15;
+    static const int Id = 0x15;
 
     SocketUByte WindowId;
     std::vector<SocketSlot> SlotData;

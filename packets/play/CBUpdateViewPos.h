@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBUpdateViewPos {
-    const int Id = 0x41;
+    static const int Id = 0x41;
 
     SocketVarInt ChunkX;
     SocketVarInt ChunkZ;

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBPlayerPosRot {
-    const int Id = 0x36;
+    static const int Id = 0x36;
 
     SocketDouble PosX;
     SocketDouble PosY;

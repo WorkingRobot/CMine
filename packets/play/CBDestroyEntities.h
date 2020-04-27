@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBDestroyEntities {
-    const int Id = 0x38;
+    static const int Id = 0x38;
 
     std::vector<SocketVarInt> EntityIds;
 

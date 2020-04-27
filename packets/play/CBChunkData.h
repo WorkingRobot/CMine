@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBChunkData {
-    const int Id = 0x22;
+    static const int Id = 0x22;
 
     SocketInt ChunkX;
     SocketInt ChunkZ;

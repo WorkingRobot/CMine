@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityMovement {
-    const int Id = 0x2C;
+    static const int Id = 0x2C;
 
     SocketVarInt EntityId;
 

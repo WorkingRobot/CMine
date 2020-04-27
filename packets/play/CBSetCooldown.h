@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSetCooldown {
-    const int Id = 0x18;
+    static const int Id = 0x18;
 
     SocketVarInt ItemId;
     SocketVarInt Cooldown; // in ticks

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBPlayerInfo {
-    const int Id = 0x34;
+    static const int Id = 0x34;
 
     struct Property {
         SocketString Name;

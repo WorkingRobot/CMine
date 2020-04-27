@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBWorldBorder {
-    const int Id = 0x3E;
+    static const int Id = 0x3E;
 
     SocketVarInt Action;
 

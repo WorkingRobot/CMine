@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityMetadata {
-    const int Id = 0x44;
+    static const int Id = 0x44;
 
     SocketVarInt EntityId;
     SocketEntityMetadata Metadata; // too lazy to implement

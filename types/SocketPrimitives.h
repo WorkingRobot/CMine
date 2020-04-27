@@ -132,6 +132,10 @@ public:
     operator std::string& () { return std::string(Data.get(), Data.get() + Length); }
     operator std::string() const { return std::string(Data.get(), Data.get() + Length); }
 
+    SocketString(const char* val, int valSize) { SetValue(val, valSize); }
+    operator char* () { return Data.get(); }
+    operator char* () const { return Data.get(); }
+
     SocketString(const char* data) {
         Length = strlen(data);
         Data = std::make_unique<char[]>(Length + 1);
@@ -143,6 +147,12 @@ public:
         Data.reset(new char[Length + 1]);
         memcpy(Data.get(), str.data(), Length);
         Data[Length] = '\0';
+    }
+
+    void SetValue(const char* str, int strSize) {
+        Length = strSize;
+        Data.reset(new char[strSize]);
+        memcpy(Data.get(), str, strSize);
     }
 
     friend SocketOStream& operator<<(SocketOStream& sock, const SocketString& out) {
@@ -463,7 +473,7 @@ public:
     }
 
     /*
-    Not intended to be read, why would a client read it?
+    Not intended to be read, why would a client send it?
     friend SocketIStream& operator>>(SocketIStream& sock, SocketNode& out) {
         return sock;
     }
@@ -487,12 +497,13 @@ public:
         return sock;
     }
 
-    /*
-    Not intended to be read, why would a client read it?
     friend SocketIStream& operator>>(SocketIStream& sock, SocketSlot& out) {
+        sock >> out.Present;
+        if (out.Present) {
+            sock >> out.ItemId.emplace() >> out.Count.emplace() >> out.NbtData.emplace();
+        }
         return sock;
     }
-    */
 };
 
 // basically SocketString but doesn't append length

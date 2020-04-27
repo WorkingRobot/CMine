@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBExplosion {
-    const int Id = 0x1D;
+    static const int Id = 0x1D;
 
     struct Record {
         SocketByte X;

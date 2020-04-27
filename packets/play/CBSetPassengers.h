@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSetPassengers {
-    const int Id = 0x4B;
+    static const int Id = 0x4B;
 
     SocketVarInt VehicleId;
     std::vector<SocketVarInt> Passengers;

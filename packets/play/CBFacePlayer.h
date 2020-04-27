@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBFacePlayer {
-    const int Id = 0x35;
+    static const int Id = 0x35;
 
     SocketVarInt AimAt; // 0: feet, 1: eyes
     SocketDouble AtX;

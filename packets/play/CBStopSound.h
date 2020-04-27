@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBStopSound {
-    const int Id = 0x53;
+    static const int Id = 0x53;
 
     SocketByte Flags;
     std::optional<SocketVarInt> Source; // bitmask 0x1

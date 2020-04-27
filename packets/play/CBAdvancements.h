@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBAdvancements {
-    const int Id = 0x58;
+    static const int Id = 0x58;
 
     struct Display {
         SocketChat Title;

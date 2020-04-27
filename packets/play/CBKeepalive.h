@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBKeepalive {
-    const int Id = 0x21;
+    static const int Id = 0x21;
 
     SocketLong KeepaliveId; // normal servers use epoch milliseconds
 

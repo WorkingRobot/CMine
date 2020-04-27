@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSelectAdvancementTab {
-    const int Id = 0x3D;
+    static const int Id = 0x3D;
 
     std::optional<SocketIdentifier> Identifier;
 

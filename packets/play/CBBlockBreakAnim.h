@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBBlockBreakAnim {
-    const int Id = 0x09;
+    static const int Id = 0x09;
 
     SocketVarInt EntityId;
     SocketPosition Location;

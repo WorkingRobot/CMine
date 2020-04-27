@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBRespawn {
-    const int Id = 0x3B;
+    static const int Id = 0x3B;
 
     SocketInt Dimension;
     SocketLong HashedSeed;

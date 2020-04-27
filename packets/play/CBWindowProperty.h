@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBWindowProperty {
-    const int Id = 0x16;
+    static const int Id = 0x16;
 
     SocketUByte WindowId;
     SocketShort Property;

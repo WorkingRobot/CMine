@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityAnim {
-    const int Id = 0x06;
+    static const int Id = 0x06;
 
     SocketVarInt EntityId;
     SocketByte Animation;

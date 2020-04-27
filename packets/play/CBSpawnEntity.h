@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSpawnEntity {
-    const int Id = 0x00;
+    static const int Id = 0x00;
 
     SocketVarInt EntityId;
     SocketGUID ObjectUuid;

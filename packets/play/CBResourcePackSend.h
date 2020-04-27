@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBResourcePackSend {
-    const int Id = 0x3A;
+    static const int Id = 0x3A;
 
     SocketString Url;
     SocketString Hash;

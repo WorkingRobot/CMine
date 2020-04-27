@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBUnlockRecipes {
-    const int Id = 0x37;
+    static const int Id = 0x37;
 
     SocketVarInt Action;
     SocketBool CraftingOpen;

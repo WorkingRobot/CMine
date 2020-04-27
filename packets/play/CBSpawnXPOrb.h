@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSpawnXPOrb {
-    const int Id = 0x01;
+    static const int Id = 0x01;
 
     SocketVarInt EntityId;
     SocketDouble X;

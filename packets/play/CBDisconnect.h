@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBDisconnect {
-    const int Id = 0x1B;
+    static const int Id = 0x1B;
 
     SocketChat Reason;
 

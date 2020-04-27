@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBWindowConfirm {
-    const int Id = 0x13;
+    static const int Id = 0x13;
 
     SocketUByte WindowId;
     SocketShort ActionNum;

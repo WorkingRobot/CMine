@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBHeldItemChange {
-    const int Id = 0x40;
+    static const int Id = 0x40;
 
     SocketByte Slot; // 0-8
 

@@ -34,6 +34,7 @@ private:
 	void HandlePacket(SocketPacket& packet);
 
 	void ConnectionThread();
+	void InitLogin();
 
 	ConnectionState State;
 	bool CompressionEnabled;

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityHeadLook {
-    const int Id = 0x3C;
+    static const int Id = 0x3C;
 
     SocketVarInt EntityId;
     SocketAngle HeadYaw; // absolute, not delta

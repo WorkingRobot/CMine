@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBParticle {
-    const int Id = 0x24;
+    static const int Id = 0x24;
 
     SocketInt ParticleId;
     SocketBool LongDistance; // distance goes from 256 to 65536

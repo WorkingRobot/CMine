@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBScoreboardObj {
-    const int Id = 0x4A;
+    static const int Id = 0x4A;
 
     SocketString Name;
     SocketByte Mode; // 0: create, 1: remove, 2: update text

@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSoundEffect {
-    const int Id = 0x52;
+    static const int Id = 0x52;
 
     SocketVarInt SoundId;
     SocketVarInt SoundCategory;

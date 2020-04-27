@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBSetSlot {
-    const int Id = 0x17;
+    static const int Id = 0x17;
 
     SocketUByte WindowId;
     SocketShort Slot;

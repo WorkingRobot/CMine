@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityAttach {
-    const int Id = 0x45;
+    static const int Id = 0x45;
 
     SocketInt AttatchedId;
     SocketInt HoldingId;

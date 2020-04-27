@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBOpenBook {
-    const int Id = 0x2E;
+    static const int Id = 0x2E;
 
     SocketVarInt Hand; // 0: main hand, 1: off hand
 

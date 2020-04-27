@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBTitle {
-    const int Id = 0x50;
+    static const int Id = 0x50;
 
     SocketVarInt Action;
 

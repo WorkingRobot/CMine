@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBCombatEvent {
-    const int Id = 0x33;
+    static const int Id = 0x33;
 
     SocketVarInt Event; // enum
 

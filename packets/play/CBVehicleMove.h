@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBVehicleMove {
-    const int Id = 0x2D;
+    static const int Id = 0x2D;
 
     // all absolute values
     SocketDouble PosX;

@@ -3,13 +3,13 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBJoinGame {
-    const int Id = 0x26;
+    static const int Id = 0x26;
 
     SocketInt EntityId;
     SocketUByte Gamemode;
     SocketInt Dimension; // -1: nether, 0: overworld, 1: end
     SocketLong HashedSeed; // first 8 bytes of SHA-256 of world seed
-    SocketUByte MaxPlayer; // obsolete
+    SocketUByte MaxPlayers; // obsolete
     SocketString LevelType; // enum
     SocketVarInt ViewDistance; // 2-32
     SocketBool ReducedDebugInfo;
@@ -21,7 +21,7 @@ struct CBJoinGame {
             << out.Gamemode
             << out.Dimension
             << out.HashedSeed
-            << out.MaxPlayer
+            << out.MaxPlayers
             << out.LevelType
             << out.ViewDistance
             << out.ReducedDebugInfo

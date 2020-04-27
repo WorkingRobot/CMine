@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBEntityVelocity {
-    const int Id = 0x46;
+    static const int Id = 0x46;
 
     SocketVarInt EntityId;
     SocketShort VelX;

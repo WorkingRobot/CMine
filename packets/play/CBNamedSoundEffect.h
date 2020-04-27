@@ -3,7 +3,7 @@
 #include "../types/SocketPrimitives.h"
 
 struct CBNamedSoundEffect {
-    const int Id = 0x1A;
+    static const int Id = 0x1A;
 
     SocketIdentifier SoundName;
     SocketVarInt SoundCategory; // enum
