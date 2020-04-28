@@ -5,8 +5,10 @@ project (CMine)
 aux_source_directory(. FILE_SOURCES)
 aux_source_directory(types TYPES_FILE_SOURCES)
 aux_source_directory(encryption ENCRYPTION_FILE_SOURCES)
+aux_source_directory(data DATA_FILE_SOURCES)
+aux_source_directory(nbt NBT_FILE_SOURCES)
 
-add_executable (CMine ${ENCRYPTION_FILE_SOURCES} ${TYPES_FILE_SOURCES} ${FILE_SOURCES})
+add_executable (CMine ${NBT_FILE_SOURCES} ${DATA_FILE_SOURCES} ${ENCRYPTION_FILE_SOURCES} ${TYPES_FILE_SOURCES} ${FILE_SOURCES})
 
 set_property(TARGET CMine PROPERTY CXX_STANDARD 20)
 
