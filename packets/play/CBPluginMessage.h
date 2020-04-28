@@ -6,7 +6,7 @@ struct CBPluginMessage {
     static const int Id = 0x19;
 
     SocketIdentifier Channel;
-    SocketString Data; // maybe SocketByteArray would be smarter?
+    SocketPluginMessage Data;
 
     friend SocketOStream& operator<<(SocketOStream& sock, const CBPluginMessage& out) {
         return sock

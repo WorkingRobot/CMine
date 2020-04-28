@@ -80,5 +80,6 @@ struct CBPlayerInfo {
                 break;
             }
         }
+        return sock;
     }
 };

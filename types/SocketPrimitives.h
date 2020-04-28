@@ -2,10 +2,12 @@
 
 #include "SocketIStream.h"
 #include "SocketOStream.h"
+#include "SocketPacketIStream.h"
 
 #include <WinSock2.h>
 
 #include <optional>
+#include <ostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -129,8 +131,6 @@ public:
 
     SocketString() : Length(0) { }
     SocketString(std::string& val) { SetValue(val); }
-    operator std::string& () { return std::string(Data.get(), Data.get() + Length); }
-    operator std::string() const { return std::string(Data.get(), Data.get() + Length); }
 
     SocketString(const char* val, int valSize) { SetValue(val, valSize); }
     operator char* () { return Data.get(); }
@@ -153,6 +153,16 @@ public:
         Length = strSize;
         Data.reset(new char[strSize]);
         memcpy(Data.get(), str, strSize);
+    }
+
+    std::string GetString() {
+        return std::string(Data.get(), Data.get() + Length);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const SocketString& out)
+    {
+        os.write(out.Data.get(), out.Length);
+        return os;
     }
 
     friend SocketOStream& operator<<(SocketOStream& sock, const SocketString& out) {
@@ -514,8 +524,6 @@ public:
 
     SocketVaries() : Length(0) { }
     SocketVaries(std::string& val) { SetValue(val); }
-    operator std::string& () { return std::string(Data.get(), Data.get() + Length); }
-    operator std::string() const { return std::string(Data.get(), Data.get() + Length); }
 
     SocketVaries(const char* data) {
         Length = strlen(data);
@@ -530,12 +538,63 @@ public:
         Data[Length] = '\0';
     }
 
+    friend std::ostream& operator<<(std::ostream& os, const SocketVaries& out)
+    {
+        os.write(out.Data.get(), out.Length);
+        return os;
+    }
+
     friend SocketOStream& operator<<(SocketOStream& sock, const SocketVaries& out) {
         sock.Write(out.Data.get(), out.Length);
         return sock;
     }
 
     friend SocketIStream& operator>>(SocketIStream& sock, SocketVaries& out) {
+        out.Data = std::make_unique<char[]>(out.Length);
+        sock.Read(out.Data.get(), out.Length);
+        return sock;
+    }
+};
+
+class SocketPluginMessage {
+public:
+    int32_t Length;
+    std::unique_ptr<char[]> Data;
+
+    SocketPluginMessage() : Length(0) { }
+    SocketPluginMessage(std::string& val) { SetValue(val); }
+
+    SocketPluginMessage(const char* val, int valSize) { SetValue(val, valSize); }
+    operator char* () { return Data.get(); }
+    operator char* () const { return Data.get(); }
+
+    void SetValue(const std::string& str) {
+        SetValue(str.data(), str.size());
+    }
+
+    void SetValue(const char* str, int strSize) {
+        Length = strSize;
+        Data.reset(new char[strSize]);
+        memcpy(Data.get(), str, strSize);
+    }
+
+    SocketPacketIStream CreateStream() {
+        return SocketPacketIStream(Data.get(), Length);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const SocketPluginMessage& out)
+    {
+        os.write(out.Data.get(), out.Length);
+        return os;
+    }
+
+    friend SocketOStream& operator<<(SocketOStream& sock, const SocketPluginMessage& out) {
+        sock.Write(out.Data.get(), out.Length);
+        return sock;
+    }
+
+    friend SocketIStream& operator>>(SocketIStream& sock, SocketPluginMessage& out) {
+        out.Length = sock.GetAvailableBufferSize();
         out.Data = std::make_unique<char[]>(out.Length);
         sock.Read(out.Data.get(), out.Length);
         return sock;

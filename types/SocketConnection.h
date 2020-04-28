@@ -35,6 +35,7 @@ private:
 
 	void ConnectionThread();
 	void InitLogin();
+	void ContinueLogin();
 
 	ConnectionState State;
 	bool CompressionEnabled;

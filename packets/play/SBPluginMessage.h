@@ -6,7 +6,7 @@ struct SBPluginMessage {
     static const int Id = 0x0B;
 
     SocketIdentifier Channel;
-    SocketString Data; // maybe SocketByteArray would be smarter?
+    SocketPluginMessage Data;
 
     friend SocketIStream& operator>>(SocketIStream& sock, SBPluginMessage& out) {
         return sock

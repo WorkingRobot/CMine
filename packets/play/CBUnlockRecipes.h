@@ -29,5 +29,6 @@ struct CBUnlockRecipes {
                 sock << recipe;
             }
         }
+        return sock;
     }
 };

@@ -16,12 +16,17 @@
 	*this << os; \
 }
 
+#define READ_PACKET(packetType) \
+	packetType packet; \
+	packetStream >> packet;
+
 SocketConnection::SocketConnection(SOCKET socket, ServerEnc* encSrv) :
 	Socket(socket),
 	EncSrv(encSrv),
 	Thread(&SocketConnection::ConnectionThread, this),
 	RecvBuffer(new char[RECV_SIZE]),
 	RecvInd(0),
+	RecvSize(0),
 	CompressionEnabled(false),
 	EncryptionEnabled(false),
 	EncCtx(nullptr),
@@ -115,7 +120,8 @@ int32_t SocketConnection::GetAvailableBufferSize() {
 bool SocketConnection::RefillBuffer() {
 	RecvSize = recv(Socket, RecvBuffer, RECV_SIZE, 0);
 	RecvInd = 0;
-	return RecvSize;
+	printf("Refilling to %d\n", RecvSize);
+	return RecvSize != -1 && RecvSize;
 }
 
 void SocketConnection::HandlePacket(SocketPacket& packet)
@@ -230,19 +236,66 @@ void SocketConnection::HandlePacket(SocketPacket& packet)
 	case ConnectionState::Play:
 		switch (packet.PacketID.Value)
 		{
-		case 0x00:
+		case SBPluginMessage::Id:
 		{
-			break;
-		}
-		case 0x01:
-		{
-			break;
-		}
-		default:
-			break;
+			READ_PACKET(SBPluginMessage);
+			auto channel = packet.Channel.GetString();
+			auto data = packet.Data.CreateStream();
+			if (channel == "minecraft:brand") {
+				SocketString brand;
+				data >> brand;
+				std::cout << "Brand: " << brand << std::endl;
+			}
+			else if (channel == "minecraft:register") {
+				std::cout << "Register: " << packet.Data << std::endl;
+			}
+			else if (channel == "minecraft:unregister") {
+				std::cout << "Unegister: " << packet.Data << std::endl;
+			}
+			else {
+				std::cout << "New message from " << packet.Channel << ":\n" << packet.Data << "\n";
+			}
 		}
 		break;
-	default:
+		case SBClientSettings::Id:
+		{
+			READ_PACKET(SBClientSettings);
+			std::cout << "Client Settings:\n"
+				<< "Chat Mode: " << std::to_string(packet.ChatMode) << "\n"
+				<< "Color: " << (packet.ColorEnabled ? "Yes" : "No") << "\n"
+				<< "Locale: " << packet.Locale << "\n"
+				<< "Main Hand: " << (packet.MainHand ? "Right" : "Left") << "\n"
+				<< "View Distance: " << std::to_string(packet.ViewDistance) << "\n"
+				<< "Skin Parts: " << std::to_string(packet.SkinParts) << "\n";
+
+			ContinueLogin();
+		}
+		break;
+		case SBTeleportConfirm::Id:
+		{
+			READ_PACKET(SBTeleportConfirm);
+			std::cout << "Teleport Confirm: Id " << std::to_string(packet.TeleportId) << "\n";
+		}
+		break;
+		case SBPlayerPosRot::Id:
+		{
+			READ_PACKET(SBPlayerPosRot);
+			std::cout << "Confirm PosRot:\n"
+				<< "Position: (" << std::to_string(packet.PosX) << ", "
+				<< std::to_string(packet.FeetY) << ", "
+				<< std::to_string(packet.PosZ) << ")\n"
+				<< "Angle: (" << std::to_string(packet.Yaw) << ", "
+				<< std::to_string(packet.Pitch) << ")\n"
+				<< "OnGround: " << (packet.OnGround ? "Yes" : "No") << "\n";
+		}
+		break;
+		case SBClientStatus::Id:
+		{
+			READ_PACKET(SBClientStatus);
+			std::cout << "Client Status:\n" << (packet.ActionId ? "Respawning" : "Stats!") << "\n";
+		}
+		break;
+		}
 		break;
 	}
 }
@@ -262,7 +315,7 @@ void SocketConnection::ConnectionThread() {
 			*this >> packet.PacketID;
 			auto dataSize = packet.Length.Value - packet.PacketID.GetSize();
 			if (dataSize == -1 || !RecvSize) {
-				printf("bruh?\n");
+				printf("No more data size, disconnecting\n");
 				break;
 			}
 			packet.PacketData = std::make_unique<char[]>(dataSize);
@@ -275,16 +328,165 @@ void SocketConnection::ConnectionThread() {
 
 void SocketConnection::InitLogin()
 {
-	CBJoinGame join;
-	join.EntityId = 0;
-	join.Gamemode = 1;
-	join.Dimension = 0;
-	join.HashedSeed = 0;
-	join.MaxPlayers = 0;
-	join.LevelType = "default";
-	join.ViewDistance = 2;
-	join.ReducedDebugInfo = false;
-	join.EnableRespawnScreen = true;
+	{
+		CBJoinGame packet;
+		packet.EntityId = 14;
+		packet.Gamemode = 1;
+		packet.Dimension = 0;
+		packet.HashedSeed = 0;
+		packet.MaxPlayers = 0;
+		packet.LevelType = "default";
+		packet.ViewDistance = 2;
+		packet.ReducedDebugInfo = false;
+		packet.EnableRespawnScreen = true;
 
-	SEND_PACKET(join);
+		SEND_PACKET(packet);
+	}
+	{
+		CBPluginMessage packet;
+		packet.Channel = "minecraft:brand";
+		packet.Data = std::string("CMine");
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBServerDifficulty packet;
+		packet.Difficulty = 0;
+		packet.Locked = true;
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBPlayerAbilities packet;
+		packet.Flags = 0x01 | 0x08; // invulnerable, creative mode, no flying
+		packet.FlySpeed = .05f;
+		packet.FovModifier = .1f;
+
+		SEND_PACKET(packet);
+	}
+}
+
+void SocketConnection::ContinueLogin() {
+	{
+		CBHeldItemChange packet;
+		packet.Slot = 0;
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBDeclareRecipes packet;
+		
+		SEND_PACKET(packet);
+	}
+	{
+		CBTags packet;
+		// unknown what to send here
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBEntityStatus packet;
+		packet.EntityId = 14;
+		packet.EntityStatus = 28; // set to op level 4
+		// unknown what to send here
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBDeclareCommands packet;
+		packet.RootInd = 0;
+
+		//SEND_PACKET(packet);
+	}
+	{
+		CBUnlockRecipes packet;
+		// unknown what to send here
+
+		//SEND_PACKET(packet);
+	}
+	{
+		CBPlayerPosRot packet;
+		packet.Flags = 0; // all absolute
+		packet.PosX = 0;
+		packet.PosY = 30;
+		packet.PosZ = 0;
+		packet.Yaw = 0;
+		packet.Pitch = 0; // straight ahead
+		packet.TeleportId = 12;
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBPlayerInfo packet;
+		packet.Action = 0;
+		CBPlayerInfo::Player player;
+		player.Uuid = SocketGUID(30, 20, 10, 0);
+		player.Name = "AsrielD";
+		player.Gamemode = 1;
+		player.Ping = 0;
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBPlayerInfo packet;
+		packet.Action = 2;
+		CBPlayerInfo::Player player;
+		player.Uuid = SocketGUID(30, 20, 10, 0);
+		player.Ping = 1;
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBUpdateViewPos packet;
+		packet.ChunkX = 0;
+		packet.ChunkZ = 0;
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBUpdateLight packet;
+		packet.ChunkX = 0;
+		packet.ChunkZ = 0;
+		
+		//SEND_PACKET(packet); deal with this shit when i read a world file lol
+	}
+	{
+		CBChunkData packet;
+		packet.ChunkX = 0;
+		packet.ChunkZ = 0;
+
+		//SEND_PACKET(packet); deal with this shit when i read a world file lol
+	}
+	{
+		CBWorldBorder packet;
+		packet.Action = 3;
+		packet.PosX = 0;
+		packet.PosZ = 0;
+		packet.OldDiameter = 4000;
+		packet.NewDiameter = 4000;
+		packet.Speed = 0;
+		packet.PortalTpBoundary = 29999984;
+		packet.WarningTime = 0;
+		packet.WarningBlocks = 30;
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBSpawnPosition packet;
+		packet.Location.SetValue(0, 30, 0); // bed spawn
+
+		SEND_PACKET(packet);
+	}
+	{
+		CBPlayerPosRot packet;
+		packet.Flags = 0; // all absolute
+		packet.PosX = 0;
+		packet.PosY = 30;
+		packet.PosZ = 0;
+		packet.Yaw = 0;
+		packet.Pitch = 0; // straight ahead
+		packet.TeleportId = 13;
+
+		SEND_PACKET(packet);
+	}
 }
