@@ -59,7 +59,7 @@ bool ReadItem(std::istream& inp, NBTItem& out, NBTType type)
 	{
 		NBTString value;
 		inp >> value;
-		out = value;
+		out = std::move(value);
 		return true;
 	}
 	case NBTType::List:
@@ -80,14 +80,14 @@ bool ReadItem(std::istream& inp, NBTItem& out, NBTType type)
 	{
 		NBTIntArray value;
 		inp >> value;
-		out = value;
+		out = std::move(value);
 		return true;
 	}
 	case NBTType::LongArray:
 	{
 		NBTLongArray value;
 		inp >> value;
-		out = value;
+		out = std::move(value);
 		return true;
 	}
 	}
@@ -167,7 +167,7 @@ inline void PrintItemInternal(std::ostream& cout, const NBTItem& inp, NBTType ty
 	switch (type)
 	{
 	case NBTType::Byte:
-		cout << std::get<NBTByte>(inp).Value;
+		cout << (int16_t)std::get<NBTByte>(inp).Value;
 		break;
 	case NBTType::Short:
 		cout << std::get<NBTShort>(inp).Value;
@@ -205,7 +205,7 @@ inline void PrintItemInternal(std::ostream& cout, const NBTItem& inp, NBTType ty
 	}
 	break;
 	case NBTType::String:
-		cout << "\"" << std::get<NBTString>(inp).Value << "\"";
+		cout << "\"" << std::get<NBTString>(inp) << "\"";
 		break;
 	case NBTType::List:
 	{
@@ -236,9 +236,9 @@ inline void PrintItemInternal(std::ostream& cout, const NBTItem& inp, NBTType ty
 		
 		for (auto& item : cmp.Items) {
 			PrintTabs(cout, tab + 1);
-			auto itemType = GetType(*item.second);
-			cout << GetTypeString(itemType) << "('" << item.first.Value << "'): ";
-			PrintItemInternal(cout, *item.second, itemType, tab + 1);
+			auto itemType = GetType(item->second);
+			cout << GetTypeString(itemType) << "('" << item->first << "'): ";
+			PrintItemInternal(cout, item->second, itemType, tab + 1);
 			cout << '\n';
 		}
 
@@ -287,7 +287,7 @@ inline void PrintItemInternal(std::ostream& cout, const NBTItem& inp, NBTType ty
 	}
 }
 
-void PrintItem(std::ostream& cout, const NBTCompound& inp)
+void PrintDocument(std::ostream& cout, const NBTCompound& inp)
 {
 	PrintItemInternal(cout, inp, NBTType::Compound, 0);
 }
@@ -339,12 +339,10 @@ inline std::istream& operator>>(std::istream& inp, NBTByteArray& out) {
 inline std::istream& operator>>(std::istream& inp, NBTString& out) {
 	uint16_t Length;
 	inp.read((char*)&Length, 2);
-	Length = ntohs(Length);
+	out.Length = ntohs(Length);
 
-	out.Value.reserve(Length);
-	auto buffer = std::make_unique<char[]>(Length);
-	inp.read(buffer.get(), Length);
-	out.Value.append(buffer.get(), Length);
+	out.Data = std::make_unique<char[]>(out.Length);
+	inp.read(out.Data.get(), out.Length);
 	return inp;
 }
 
@@ -366,7 +364,6 @@ inline std::istream& operator>>(std::istream& inp, NBTList& out) {
 
 std::istream& operator>>(std::istream& inp, NBTCompound& out) {
 	NBTType Type;
-	NBTString Key;
 	while (true) {
 		NBTByte type;
 		inp >> type;
@@ -376,11 +373,11 @@ std::istream& operator>>(std::istream& inp, NBTCompound& out) {
 			break;
 		}
 
-		inp >> Key;
+		auto value = std::make_shared<std::pair<NBTString, NBTItem>>();
+		inp >> value->first;
 
-		auto value = std::make_shared<NBTItem>();
-		if (ReadItem(inp, *value, Type)) {
-			out.Items.emplace_back(Key, value);
+		if (ReadItem(inp, value->second, Type)) {
+			out.Items.emplace_back(value);
 		}
 	}
 	return inp;

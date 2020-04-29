@@ -13,6 +13,7 @@ add_executable (CMine ${NBT_FILE_SOURCES} ${DATA_FILE_SOURCES} ${ENCRYPTION_FILE
 set_property(TARGET CMine PROPERTY CXX_STANDARD 20)
 
 find_package(OpenSSL REQUIRED)
+find_package(ZLIB REQUIRED)
 
 set(CompilerFlags
         CMAKE_CXX_FLAGS
@@ -26,4 +27,4 @@ foreach(CompilerFlag ${CompilerFlags})
   string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
 endforeach()
 
-target_link_libraries(CMine PRIVATE Ws2_32 OpenSSL::SSL OpenSSL::Crypto Crypt32)
+target_link_libraries(CMine PRIVATE ZLIB::ZLIB Ws2_32 OpenSSL::SSL OpenSSL::Crypto Crypt32)

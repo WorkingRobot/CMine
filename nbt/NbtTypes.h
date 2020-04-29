@@ -40,7 +40,7 @@ struct NBTLongArray;
 typedef std::variant<NBTByte, NBTShort, NBTInt, NBTLong, NBTFloat, NBTDouble, NBTByteArray, NBTString, NBTList, NBTCompound, NBTIntArray, NBTLongArray> NBTItem;
 
 bool ReadItem(std::istream& inp, NBTItem& out, NBTType type);
-void PrintItem(std::ostream& cout, const NBTCompound& inp);
+void PrintDocument(std::ostream& cout, const NBTCompound& inp);
 
 struct NBTByte {
 public:
@@ -126,9 +126,14 @@ public:
 
 struct NBTString {
 public:
-	std::string Value;
+	NBTInt Length;
+	std::unique_ptr<char[]> Data;
 
 	NBTString() { }
+
+	friend std::ostream& operator<<(std::ostream& out, const NBTString& str) {
+		return out.write(str.Data.get(), str.Length);
+	}
 
 	friend std::istream& operator>>(std::istream& inp, NBTString& out);
 };
@@ -143,7 +148,7 @@ public:
 
 struct NBTCompound {
 public:
-	std::vector<std::pair<NBTString, std::shared_ptr<NBTItem>>> Items;
+	std::vector<std::shared_ptr<std::pair<NBTString, NBTItem>>> Items;
 
 	friend std::istream& operator>>(std::istream& inp, NBTCompound& out);
 };
